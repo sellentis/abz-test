@@ -2,33 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import photoPlaceholder from "../assets/img/photo-cover.svg"
 
-const Cards = () => {
-	const [users, setUsers] = useState([])
-	const [page, setPage] = useState(1)
-	const [count, setCount] = useState(6)
-	const [isPageLast, setIsPageLast] = useState(false)
-
-
-	const fetchData = (page, count) => {
-		axios.get('https://frontend-test-assignment-api.abz.agency/api/v1/users', {
-			params: {
-				page: page,
-				count: count
-			}
-		}).then(response => {
-			setIsPageLast(!!response.data.links.next_url)
-			setPage(prev => prev + 1)
-			setUsers(prev => [...prev, ...response.data.users])
-		})
-	}
-
-	useEffect(() => {
-		fetchData(page, 6)
-	}, [])
-
-	const loadMore = () => {
-		fetchData(page, count)
-	}
+const Cards = ({users, isPageLast, loadMore}) => {
 
 	return (
 		<div>

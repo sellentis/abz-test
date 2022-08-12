@@ -4,7 +4,7 @@ import imageSuccess from "../assets/img/success-image.svg"
 
 const _URL = window.URL || window.webkitURL;
 
-const Form = () => {
+const Form = ({setUsers, fetchData, setPage}) => {
 	const [positions, setPositions] = useState([])
 	// form data
 	const [name, setName] = useState("")
@@ -45,9 +45,14 @@ const Form = () => {
 			setFormValid(true)
 		}
 	}, [nameError, emailError, phoneError, photoError])
+
 	useEffect(() => {
-		setPositions([])
-		fetchPositions()
+		if (isPostSuccess) {
+			setUsers([])
+			setPage(1)
+			fetchData(1, 6)
+		}
+		console.log("render")
 	}, [isPostSuccess])
 
 	const nameHandler = (e) => {
