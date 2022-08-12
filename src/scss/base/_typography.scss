@@ -1,0 +1,20 @@
+// example local font
+// @include font-face('Circe', 'Circe-Regular', '../fonts/', 'Circe-Regular', 400, normal);
+
+$font-family-primary: 'Nunito', sans-serif;
+$font-family-secondary: Arial, sans-serif;
+$font-weight-primary: 400;
+
+body {
+  font-family: $font-family-primary;
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: $font-weight-primary;
+  color: $clBlack;
+}
+
+
+
+@include respond-to('mobile') {}
+
+@include respond-to('tablet') {}

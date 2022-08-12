@@ -1,0 +1,40 @@
+@import "base/reset";
+
+@import "utils/breakpoints";
+@import "utils/colors";
+@import "utils/mixins";
+@import "utils/helpers";
+
+@import "base/typography";
+
+@import "components/buttons";
+@import "components/additional";
+
+@import "layout/header";
+@import "layout/footer";
+
+@import "sections/about";
+@import "sections/cards";
+@import "sections/form";
+
+body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: $clLightGrey;
+
+  a {
+    color: $clBlack;
+  }
+
+  main {
+    flex: 1;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 140px;
+  padding-bottom: 100px;
+}

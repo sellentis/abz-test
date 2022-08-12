@@ -1,0 +1,54 @@
+@mixin font-face($family, $file, $path, $svg, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: $family;
+    src: url($path + $file + '.eot');
+    src: url($path + $file + '.eot?#iefix') format('embedded-opentype'),
+      url($path + $file + '.woff') format('woff'),
+      url($path + $file + '.woff2') format('woff2'),
+      url($path + $file + '.ttf') format('truetype');
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+@mixin pseudo($content: '', $display: block, $pos: absolute) {
+  content: $content;
+  display: $display;
+  position: $pos;
+}
+
+@mixin triangle($width, $direction, $color) {
+  width: 0;
+  height: 0;
+
+  @if $direction==up {
+    border-left: $width solid transparent;
+    border-right: $width solid transparent;
+    border-bottom: $width solid $color;
+  }
+
+  @if $direction==down {
+    border-left: $width solid transparent;
+    border-right: $width solid transparent;
+    border-top: $width solid $color;
+  }
+
+  @if $direction==left {
+    border-top: $width solid transparent;
+    border-bottom: $width solid transparent;
+    border-right: $width solid $color;
+  }
+
+  @if $direction==right {
+    border-top: $width solid transparent;
+    border-bottom: $width solid transparent;
+    border-left: $width solid $color;
+  }
+}
+
+@mixin truncate($truncation-boundary) {
+  max-width: $truncation-boundary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

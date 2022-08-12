@@ -1,0 +1,17 @@
+.header {
+  padding: 13px 0;
+  background: #fff;
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__logo {
+    display: inline-flex;
+  }
+  &__cabinet {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}

@@ -1,0 +1,28 @@
+// Breakpoint Rules
+$breakpoints: (
+  'mobile':      (max-width: 480px),
+  'mobile-min':  (min-width: 481px),
+  'mobile-wide': (max-width: 560px),
+  'tablet':      (max-width: 768px),
+  'tablet-min':  (min-width: 769px),
+  'tablet-wide': (max-width: 980px),
+  'desktop':     (max-width: 1300px),
+  'desktop-min': (min-width: 1301px),
+  'desktop-wide':(max-width: 1480px)) !default;
+
+@mixin respond-to($breakpoint) {
+
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $breakpoint) {
+
+    // Prints a media query based on the value
+    @media #{inspect(map-get($breakpoints, $breakpoint))} {
+      @content;
+    }
+  }
+
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "+"Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}

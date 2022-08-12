@@ -1,0 +1,31 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 4px 20px;
+  min-width: 100px;
+  border-radius: 100vw;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: $clBlack;
+  border: none;
+  transition: all 0.3s ease;
+
+  &--yellow {
+    background: $clYellow;
+  }
+
+  &:not(.btn--disabled) {
+    &:hover {
+      background: $clYellowHover;
+    }
+  }
+
+  &--disabled {
+    pointer-events: none;
+    background: $clDarkGrey;
+    color: rgba(255, 255, 255, 0.87);
+  }
+}

@@ -1,0 +1,40 @@
+.about {
+  @include respond-to("desktop") {
+    background-image: url('../../assets/img/about-bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+
+  &__inner {
+    background-image: url('../../assets/img/about-bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 164px 0;
+
+    @include respond-to("desktop") {
+      background-image: none;
+    }
+    @include respond-to("tablet-wide") {
+      padding: 90px 0;
+    }
+    @include respond-to("mobile-wide") {
+      padding: 40px 0 70px;
+    }
+  }
+  .section__header {
+    margin-bottom: 0;
+  }
+  &__box {
+    max-width: 380px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+  }
+
+  &__text {
+    margin: 21px 0 32px;
+  }
+}
