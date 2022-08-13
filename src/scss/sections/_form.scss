@@ -4,11 +4,11 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 34px;
+  gap: 30px;
 
   .field {
-    &:not(:last-child) {
-      margin-bottom: 34px;
+    &:not(:last-of-type) {
+      margin-bottom: 30px;
     }
 
     &__inner {
@@ -17,6 +17,7 @@
 
     &__input {
       font-family: $font-family-primary;
+      height: 54px;
       padding: 14px 16px;
       width: 100%;
       border: 1px solid $clGrey;
@@ -26,6 +27,7 @@
       font-size: 16px;
       line-height: 26px;
       color: $clBlack;
+      transition: border-color 0.3s ease;
       &:-webkit-autofill {
         -webkit-box-shadow: 0 0 0 30px $clLightGrey inset !important;
         &:hover, &:focus, &:active {
@@ -75,6 +77,19 @@
       color: $clRed;
       margin-left: 16px;
       margin-top: 4px;
+    }
+    &--highlight-error {
+      .field__input {
+        border-color: $clRed;
+        border-width: 2px;
+      }
+      .field__placeholder {
+        color: $clRed;
+      }
+      .file__hint, .file__preview {
+        border-color: $clRed;
+        border-width: 2px;
+      }
     }
     &__hint {
       font-weight: 400;
@@ -165,6 +180,7 @@
     cursor: pointer;
     &__wrap {
       margin-top: 16px;
+      margin-bottom: 0;
     }
     &__hint {
       height: inherit;
@@ -175,6 +191,7 @@
       justify-content: center;
       flex-shrink: 0;
       border-radius: 4px 0px 0px 4px;
+      transition: border-color 0.3s ease;
     }
 
     &__preview {
@@ -190,6 +207,10 @@
       font-size: 16px;
       line-height: 26px;
       color: $clPlaceholders;
+      transition: border-color 0.3s ease;
+      &--filled {
+        color: $clBlack;
+      }
     }
 
     &__input {

@@ -1,11 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import axios from "axios";
 import imageSuccess from "../assets/img/success-image.svg"
+import {motion} from "framer-motion";
 
+// for image object (check for size)
 const _URL = window.URL || window.webkitURL;
 
 const Form = ({setUsers, fetchData, setPage}) => {
+	//ref for scroll into view after post data to avoid page jump
+	const form = useRef()
+
+	// form option list
 	const [positions, setPositions] = useState([])
+
 	// form data
 	const [name, setName] = useState("")
 	const [email, setEmail] = useState("")
@@ -13,31 +20,46 @@ const Form = ({setUsers, fetchData, setPage}) => {
 	const [position, setPosition] = useState(1)
 	const [photo, setPhoto] = useState("")
 	const [photoTitle, setPhotoTitle] = useState("")
+
+	//token for post request
 	const [postToken, setPostToken] = useState("")
 
-	//form data visited
+	//form inputs visited
 	const [nameVisited, setNameVisited] = useState(false)
 	const [emailVisited, setEmailVisited] = useState(false)
 	const [phoneVisited, setPhoneVisited] = useState(false)
 	const [photoVisited, setPhotoVisited] = useState(false)
-	//form data errors
+
+	//form inputs errors
 	const [nameError, setNameError] = useState("Username can't be empty")
 	const [emailError, setEmailError] = useState("Email can't be empty")
 	const [phoneError, setPhoneError] = useState("Phone can't be empty")
 	const [photoError, setPhotoError] = useState("The photo format must be jpeg/jpg type")
+
+	//all field valid & button available
 	const [formValid, setFormValid] = useState(false)
-	//form send success
+
+	//form send request success
 	const [isPostSuccess, setIsPostSuccess] = useState(false)
 
+	//form request in progress
+	const [postIsLoading, setPostIsLoading] = useState(false)
+
+	//get form options list
 	const fetchPositions = () => {
 		axios.get('https://frontend-test-assignment-api.abz.agency/api/v1/positions')
 			.then(response => {
 				setPositions(response.data.positions)
 			})
+			.catch(function (error) {
+				alert(`Cant get positions (${error.message}), try it later!`);
+			})
 	}
 	useEffect(() => {
 		fetchPositions()
 	}, [])
+
+	//toggle form button depending on valid inputs
 	useEffect(() => {
 		if (nameError || emailError || phoneError || photoError) {
 			setFormValid(false)
@@ -46,14 +68,6 @@ const Form = ({setUsers, fetchData, setPage}) => {
 		}
 	}, [nameError, emailError, phoneError, photoError])
 
-	useEffect(() => {
-		if (isPostSuccess) {
-			setUsers([])
-			setPage(1)
-			fetchData(1, 6)
-		}
-		console.log("render")
-	}, [isPostSuccess])
 
 	const nameHandler = (e) => {
 		setName(e.target.value)
@@ -87,6 +101,7 @@ const Form = ({setUsers, fetchData, setPage}) => {
 	const photoHandler = (e) => {
 		setPhotoTitle(e.target.files[0].name)
 		setPhoto(e.target.files[0])
+		//check for image size
 		const file = e.target.files[0]
 		const img = new Image();
 		img.src = _URL.createObjectURL(file);
@@ -102,6 +117,8 @@ const Form = ({setUsers, fetchData, setPage}) => {
 	}
 	const formSendHandler = (e) => {
 		e.preventDefault()
+		setPostIsLoading(true)
+		// get token
 		axios.get('https://frontend-test-assignment-api.abz.agency/api/v1/token')
 			.then(response => {
 				let formData = new FormData()
@@ -110,6 +127,7 @@ const Form = ({setUsers, fetchData, setPage}) => {
 				formData.append('phone', phone)
 				formData.append('position_id', position)
 				formData.append('photo', photo)
+				//get users
 				axios.post(
 					'https://frontend-test-assignment-api.abz.agency/api/v1/users',
 					formData,
@@ -119,12 +137,32 @@ const Form = ({setUsers, fetchData, setPage}) => {
 						}
 					})
 					.then(response => {
-						if (response.data.success) {
 							setIsPostSuccess(true)
+							setPostIsLoading(false)
+							// clear users list
+							setUsers([])
+							setPage(1)
+							fetchData(1, 6)
+					})
+					.catch(function (error) {
+						//alert error from server
+						if (error.response?.data?.message) {
+							alert(error.response.data.message);
 						}
+						else {
+							alert("Something weird. Try it later!")
+						}
+						setPostIsLoading(false)
 					})
 			})
+			.catch(function (error) {
+				alert("Cant get token, try it later!");
+				setPostIsLoading(false)
+			})
+		//scroll after success request to prevent page jump after removing users
+		form.current.scrollIntoView()
 	}
+	//sets inputs are visited and errors can be displayed
 	const blurHandler = (e) => {
 		switch (e.target.name) {
 			case "name":
@@ -139,14 +177,14 @@ const Form = ({setUsers, fetchData, setPage}) => {
 		}
 	}
 	return (
-		<section className="contact">
+		<section className="contact" ref={form}>
 			<div className="container">
 				{!isPostSuccess ?
 					<>
 						<h2 className="section__header">Working with POST request</h2>
 						<form onSubmit={formSendHandler} className="form">
 							<fieldset>
-								<div className="field">
+								<div className={`field ${(nameVisited && nameError) && "field--highlight-error"}`}>
 									<div className="field__inner">
 										<input
 											type="text"
@@ -163,7 +201,7 @@ const Form = ({setUsers, fetchData, setPage}) => {
 										{(nameVisited && nameError) && <span>{nameError}</span>}
 									</p>
 								</div>
-								<div className="field">
+								<div className={`field ${(emailVisited && emailError) && "field--highlight-error"}`}>
 									<div className="field__inner">
 										<input
 											type="text"
@@ -180,7 +218,7 @@ const Form = ({setUsers, fetchData, setPage}) => {
 										{(emailVisited && emailError) && <span>{emailError}</span>}
 									</p>
 								</div>
-								<div className="field">
+								<div className={`field ${(phoneVisited && phoneError) && "field--highlight-error"}`}>
 									<div className="field__inner">
 										<input
 											type="text"
@@ -218,10 +256,11 @@ const Form = ({setUsers, fetchData, setPage}) => {
 									)}
 								</div>
 							</fieldset>
-							<fieldset className="file__wrap">
+							<fieldset className={`field file__wrap ${(photoVisited && photoError) && "field--highlight-error"}`}>
 								<label className="file" onClick={() => setPhotoVisited(true)}>
 									<div className="file__hint">Upload</div>
-									<div className="file__preview">{photoTitle ? photoTitle : "Upload your photo"}</div>
+									<div
+										className={`file__preview ${photoTitle && "file__preview--filled"}`}>{photoTitle ? photoTitle : "Upload your photo"}</div>
 									<input
 										type="file"
 										className="file__input"
@@ -234,21 +273,22 @@ const Form = ({setUsers, fetchData, setPage}) => {
 									{(photoVisited && photoError) && <span>{photoError}</span>}
 								</p>
 							</fieldset>
-							<fieldset className="form__nav">
+							<div className="form__nav">
 								<button
-									className={formValid ? "btn btn--yellow" : "btn btn--yellow btn--disabled"}
+									className={`btn btn--yellow ${!formValid && "btn--disabled"} ${postIsLoading && "btn--loading"}`
+									}
 									type={"submit"}
 								>
 									Sign up
 								</button>
-							</fieldset>
+							</div>
 						</form>
 					</>
 					:
-					<>
+					<div>
 						<h2 className="section__header">User successfully registered</h2>
 						<img src={imageSuccess} alt="Done!" style={{margin: "0 auto", display: "block", maxWidth: "100%"}}/>
-					</>
+					</div>
 				}
 			</div>
 		</section>

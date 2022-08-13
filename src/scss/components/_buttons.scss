@@ -11,7 +11,7 @@
   line-height: 26px;
   color: $clBlack;
   border: none;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 
   &--yellow {
     background: $clYellow;
@@ -20,6 +20,22 @@
   &:not(.btn--disabled) {
     &:hover {
       background: $clYellowHover;
+    }
+  }
+  &--loading {
+    pointer-events: none;
+    color: transparent;
+    position: relative;
+    &:after {
+      @include pseudo();
+      height: 20px;
+      width: 20px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(0deg);
+      background: url(../../assets/img/spinner.svg) no-repeat center;
+      background-size: contain;
+      animation:spin 2s linear infinite;
     }
   }
 
