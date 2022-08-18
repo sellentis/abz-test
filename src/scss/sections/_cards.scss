@@ -4,6 +4,7 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 29px;
     min-height: 537px;
+    //overflow: hidden;
     @include respond-to("tablet-wide") {
       grid-template-columns: repeat(2, 1fr);
       gap: 16px;

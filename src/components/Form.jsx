@@ -7,9 +7,6 @@ import {motion} from "framer-motion";
 const _URL = window.URL || window.webkitURL;
 
 const Form = ({setUsers, fetchData, setPage}) => {
-	//ref for scroll into view after post data to avoid page jump
-	const form = useRef()
-
 	// form option list
 	const [positions, setPositions] = useState([])
 
@@ -123,7 +120,7 @@ const Form = ({setUsers, fetchData, setPage}) => {
 			.then(response => {
 				let formData = new FormData()
 				formData.append('name', name)
-				formData.append('email', email)
+				formData.append('email', email.toLowerCase())
 				formData.append('phone', phone)
 				formData.append('position_id', position)
 				formData.append('photo', photo)
@@ -147,6 +144,7 @@ const Form = ({setUsers, fetchData, setPage}) => {
 					.catch(function (error) {
 						//alert error from server
 						if (error.response?.data?.message) {
+							console.log(error)
 							alert(error.response.data.message);
 						}
 						else {
@@ -159,8 +157,8 @@ const Form = ({setUsers, fetchData, setPage}) => {
 				alert("Cant get token, try it later!");
 				setPostIsLoading(false)
 			})
-		//scroll after success request to prevent page jump after removing users
-		form.current.scrollIntoView()
+
+
 	}
 	//sets inputs are visited and errors can be displayed
 	const blurHandler = (e) => {
@@ -177,7 +175,7 @@ const Form = ({setUsers, fetchData, setPage}) => {
 		}
 	}
 	return (
-		<section className="contact" ref={form}>
+		<section className="contact">
 			<div className="container">
 				{!isPostSuccess ?
 					<>
@@ -287,7 +285,7 @@ const Form = ({setUsers, fetchData, setPage}) => {
 					:
 					<div>
 						<h2 className="section__header">User successfully registered</h2>
-						<img src={imageSuccess} alt="Done!" style={{margin: "0 auto", display: "block", maxWidth: "100%"}}/>
+						<img width={328} height={290} src={imageSuccess} alt="Done!" style={{margin: "0 auto", display: "block", maxWidth: "100%"}}/>
 					</div>
 				}
 			</div>

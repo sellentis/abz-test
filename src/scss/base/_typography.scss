@@ -1,5 +1,4 @@
-// example local font
-// @include font-face('Circe', 'Circe-Regular', '../fonts/', 'Circe-Regular', 400, normal);
+@include font-face('Nunito', 'nunito-v25-latin-regular', '../../assets/fonts/', 'nunito-v25-latin-regular', 400, normal);
 
 $font-family-primary: 'Nunito', sans-serif;
 $font-family-secondary: Arial, sans-serif;
